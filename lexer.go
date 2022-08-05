@@ -1,4 +1,4 @@
-package condition
+package conditions
 
 // Lexer 代表一个词法解析器
 type Lexer struct {
