@@ -3,16 +3,40 @@
 -   这样的表达方式更加符合我们日常的代码习惯
 
 ```golang
-    type RequestParams struct {
-        ID int          `validate:"$ in [1, 2, 3]"`                // ID字段的取值必须是1 or 2 or 3
-        Appname string  `validate:"len($) > 10 && len($) < 20"`   // Appname字段的取值的长度必须大于10并且小于20
-    }
+package main
+
+import (
+	"fmt"
+	"github.com/bdjimmy/conditions"
+)
+
+func main() {
+	input := `(len(abc) > 1 && X == "123") || Y in [1, 2, 3]`
+	p := conditions.NewParser(conditions.NewLexer(input))
+	program := p.ParseProgram()
+	if len(p.Errors()) != 0 {
+		// some err
+	}
+
+	env := conditions.NewEnvironment()
+	env.Set("abc", &conditions.String{
+		Value: "-=-=-=-",
+	})
+	env.Set("X", &conditions.String{
+		Value: "123",
+	})
+	env.Set("Y", &conditions.Integer{
+		Value: 3,
+	})
+
+	fmt.Println(conditions.Eval(program, env))
+
+}
 ```
 
 ## 支持的数据类型
 -   nil
 -   int
--   float
 -   string
 -   boolean
 -   array
