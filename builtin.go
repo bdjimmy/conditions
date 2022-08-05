@@ -1,4 +1,4 @@
-package condition
+package conditions
 
 type BuiltinFunction func(args ...Object) Object
 type Builtin struct {
